@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAM SHADOWS OF LUMIERE | Applied Quantum & Post-Quantum Cryptography</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0a0a12',
+                        'obsidian-card': 'rgba(18, 18, 30, 0.75)',
+                        'cyan-glow': '#00f3ff',
+                        'purple-glow': '#7928ca',
+                        'emerald-glow': '#00dfa2',
+                        'border-glow': 'rgba(0, 243, 255, 0.25)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 25px -5px rgba(0, 243, 255, 0.4)',
+                        'neon-purple': '0 0 25px -5px rgba(121, 40, 202, 0.4)',
+                        'neon-emerald': '0 0 25px -5px rgba(0, 223, 162, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a12;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e1e30;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+
+        .glass-card {
+            background: rgba(18, 18, 32, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 243, 255, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(0, 243, 255, 0.2);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .text-gradient-cyan {
+        background: linear-gradient(135deg, #00f3ff 0%, #00dfa2 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 4s infinite ease-in-out;
+        }
+
+        .quantum-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .code-box {
+            font-family: 'Fira Code', monospace;
+            background: rgba(5, 5, 10, 0.9);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <div class="quantum-orb w-96 h-96 bg-purple-900/30 top-10 left-[-100px] animate-pulse-glow"></div>
+    <div class="quantum-orb w-[30rem] h-[30rem] bg-cyan-900/20 top-[40%] right-[-150px] animate-pulse-glow" style="animation-delay: 2s;"></div>
+    <div class="quantum-orb w-96 h-96 bg-emerald-900/20 bottom-20 left-1/3 animate-pulse-glow" style="animation-delay: 1s;"></div>
+
+    <canvas id="quantum-bg" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="#hero" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center shadow-neon-cyan group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-cubes-stacked text-obsidian font-bold text-xl"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs font-mono text-cyan-400 tracking-widest uppercase">Team 10</span>
+                        <span class="font-extrabold text-lg text-white tracking-wider group-hover:text-cyan-400 transition-colors">SHADOWS OF LUMIERE</span>
+                    </div>
+                </a>
+
+                <div class="hidden lg:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#overview" class="hover:text-cyan-400 transition-colors">Overview</a>
+                    <a href="#articles" class="hover:text-cyan-400 transition-colors">Articles</a>
+                    <a href="#news" class="hover:text-cyan-400 transition-colors">News</a>
+                    <a href="#simulator" class="hover:text-cyan-400 transition-colors">PQC Sim</a>
+                    <a href="#ads" class="hover:text-cyan-400 transition-colors">Tech Ads</a>
+                    <a href="#trivia" class="hover:text-cyan-400 transition-colors">Trivia</a>
+                    <a href="#podcast" class="hover:text-cyan-400 transition-colors">Podcast</a>
+                    <a href="#references" class="hover:text-cyan-400 transition-colors">References</a>
+                </div>
+
+                <div class="hidden md:flex items-center">
+                    <a href="#simulator" class="px-4 py-2 rounded-lg text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/40 hover:bg-cyan-500 hover:text-obsidian font-bold transition-all shadow-neon-cyan">
+                        <i class="fa-solid fa-terminal mr-1.5"></i> Launch Lab
+                    </a>
+                </div>
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" type="button" class="text-gray-400 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden glass-card border-t border-gray-800 px-4 pt-3 pb-6 space-y-3 text-sm">
+            <a href="#overview" class="block py-2 text-gray-300 hover:text-cyan-400">Overview</a>
+            <a href="#articles" class="block py-2 text-gray-300 hover:text-cyan-400">Opinion Articles</a>
+            <a href="#news" class="block py-2 text-gray-300 hover:text-cyan-400">Featured News</a>
+            <a href="#simulator" class="block py-2 text-gray-300 hover:text-cyan-400">PQC Simulator Lab</a>
+            <a href="#ads" class="block py-2 text-gray-300 hover:text-cyan-400">Tech Ads</a>
+            <a href="#trivia" class="block py-2 text-gray-300 hover:text-cyan-400">Fun Facts & Trivia</a>
+            <a href="#podcast" class="block py-2 text-gray-300 hover:text-cyan-400">Behind the Scenes Podcast</a>
+            <a href="#references" class="block py-2 text-gray-300 hover:text-cyan-400">References</a>
+        </div>
+    </nav>
+
+    <main class="relative z-10 pt-20">
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20">
+            <div class="max-w-5xl mx-auto text-center space-y-8">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card border-cyan-500/30 text-cyan-400 text-xs font-mono tracking-widest uppercase shadow-neon-cyan">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span>Team Shadows of Lumiere • Technical Dossier</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-tight">
+                    Applied Quantum Computing <br class="hidden sm:block"/>
+                    <span class="text-gradient-cyan">&amp; Post-Quantum Cryptography</span>
+                </h1>
+
+                <p class="max-w-3xl mx-auto text-base sm:text-xl text-gray-400 font-light leading-relaxed">
+                    Navigating the computational shift from <span class="text-cyan-300">qubit superposition</span> to lattice-based mathematical defenses designed to secure globally encrypted architectures against <span class="text-purple-400">Shor's Algorithm</span> threat vectors.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                    <a href="#simulator" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-400 text-obsidian font-bold text-sm tracking-wider uppercase hover:opacity-95 transition-all shadow-neon-cyan flex items-center justify-center space-x-2">
+                        <span>Explore PQC Simulator</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#podcast" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card text-white hover:text-cyan-400 border border-gray-700 hover:border-cyan-500/50 font-bold text-sm tracking-wider uppercase transition-all flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-circle-play text-cyan-400 text-lg"></i>
+                        <span>Listen Podcast</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- OVERVIEW -->
+        <section id="overview" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="text-center space-y-4">
+                    <h2 class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Technical Paradigm</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Quantum Computing vs Classical Security</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 rounded-2xl space-y-4">
+                        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/20">
+                            <i class="fa-solid fa-atom"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">Quantum Supremacy</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Qubits leverage superposition and quantum entanglement to evaluate parallel states, speeding up prime factor computations exponentially.
+                        </p>
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl space-y-4">
+                        <div class="w-14 h-14 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-2xl border border-purple-500/20">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">The RSA Vulnerability</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Shor's Algorithm solves prime factorization in polynomial time, rendering current asymmetric encryption schemes vulnerable.
+                        </p>
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl space-y-4">
+                        <div class="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/20">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white">Lattice-Based PQC</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Relies on mathematical problems intractable for both quantum and classical machines, such as Learning With Errors (LWE).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPINION ARTICLES -->
+        <section id="articles" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900 bg-obsidian/40">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="flex flex-col md:flex-row md:items-end justify-between">
+                    <div class="space-y-3">
+                        <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Technical Analysis</div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Opinion Articles</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <article class="glass-card p-8 rounded-2xl flex flex-col justify-between space-y-6">
+                        <div class="space-y-4">
+                            <span class="px-3 py-1 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-mono">CRYPTANALYSIS ESSAY</span>
+                            <h3 class="text-2xl font-bold text-white cursor-pointer hover:text-cyan-400" onclick="openArticleModal(1)">
+                                The Fall of RSA: Preparing Infrastructure for "Harvest Now, Decrypt Later" Attack Vectors
+                            </h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">
+                                Adversaries are actively intercepting encrypted traffic globally. Storing encrypted handshakes today allows decryption once Shor's algorithm becomes operational.
+                            </p>
+                        </div>
+                        <button onclick="openArticleModal(1)" class="text-xs font-mono text-cyan-400 flex items-center space-x-1">
+                            <span>Read Essay</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </article>
+
+                    <article class="glass-card p-8 rounded-2xl flex flex-col justify-between space-y-6">
+                        <div class="space-y-4">
+                            <span class="px-3 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono">PQC IMPLEMENTATION</span>
+                            <h3 class="text-2xl font-bold text-white cursor-pointer hover:text-cyan-400" onclick="openArticleModal(2)">
+                                Lattice Mathematics: The Geometric Fortress of Post-Quantum Cryptography
+                            </h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">
+                                Transitioning from prime factor systems to high-dimensional lattice vector problems redefines mathematical hardness guarantees for standard protocols.
+                            </p>
+                        </div>
+                        <button onclick="openArticleModal(2)" class="text-xs font-mono text-cyan-400 flex items-center space-x-1">
+                            <span>Read Essay</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED NEWS -->
+        <section id="news" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="space-y-3">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Industry Updates</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Featured News</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between p-6 space-y-4">
+                        <span class="px-2.5 py-1 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 w-fit">NIST STANDARD</span>
+                        <h4 class="text-lg font-bold text-white">NIST Finalizes Primary Post-Quantum Encryption Standards</h4>
+                        <p class="text-xs text-gray-400">Release of ML-KEM and ML-DSA standards for global implementation.</p>
+                        <button onclick="openNewsModal(1)" class="py-2 text-xs font-mono text-cyan-400 border border-cyan-500/30 rounded-lg">View Full Report</button>
+                    </div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between p-6 space-y-4">
+                        <span class="px-2.5 py-1 rounded text-[10px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40 w-fit">HARDWARE</span>
+                        <h4 class="text-lg font-bold text-white">IBM Scaling Quantum Systems Beyond 1,000 Qubits</h4>
+                        <p class="text-xs text-gray-400">Condor and Heron processors demonstrate robust error mitigation techniques.</p>
+                        <button onclick="openNewsModal(2)" class="py-2 text-xs font-mono text-purple-400 border border-purple-500/30 rounded-lg">View Full Report</button>
+                    </div>
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between p-6 space-y-4">
+                        <span class="px-2.5 py-1 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 w-fit">WEB PROTOCOL</span>
+                        <h4 class="text-lg font-bold text-white">Web Browsers Adopt Hybrid X25519 + Kyber</h4>
+                        <p class="text-xs text-gray-400">Chrome and Cloudflare deploy hybrid TLS 1.3 key exchanges.</p>
+                        <button onclick="openNewsModal(3)" class="py-2 text-xs font-mono text-emerald-400 border border-emerald-500/30 rounded-lg">View Full Report</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULATOR LAB -->
+        <section id="simulator" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900 bg-obsidian/60">
+            <div class="max-w-7xl mx-auto space-y-10">
+                <div class="text-center space-y-3">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Interactive Encryption Simulator</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Quantum vs. Post-Quantum Attack Lab</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-4 glass-card p-6 rounded-2xl space-y-6">
+                        <h3 class="text-lg font-bold text-white">Simulation Controls</h3>
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-400 uppercase">Target Cryptosystem</label>
+                            <select id="sim-algorithm" class="w-full bg-obsidian border border-gray-700 rounded-lg p-3 text-sm text-white focus:outline-none">
+                                <option value="rsa">RSA-2048 (Classical)</option>
+                                <option value="kyber" selected>CRYSTALS-Kyber (PQC Lattice)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-mono">
+                                <span class="text-gray-400">Qubit Power</span>
+                                <span id="qubit-value" class="text-cyan-400 font-bold">4,096 Qubits</span>
+                            </div>
+                            <input type="range" id="sim-qubits" min="100" max="10000" step="100" value="4096" class="w-full accent-cyan-400">
+                        </div>
+                        <button onclick="runSimulation()" class="w-full py-3.5 rounded-xl bg-cyan-500 text-obsidian font-bold text-sm uppercase tracking-wider shadow-neon-cyan">
+                            Execute Attack
+                        </button>
+                        <div class="code-box p-4 rounded-xl text-xs space-y-2 h-32 overflow-y-auto" id="sim-log">
+                            <p class="text-cyan-400">// System Ready.</p>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8 glass-card p-6 rounded-2xl flex flex-col justify-between space-y-6">
+                        <div class="flex justify-between items-center border-b border-gray-800 pb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white" id="sim-status-title">Algorithm Protection Status</h3>
+                                <p class="text-xs text-gray-400 font-mono" id="sim-status-subtitle">CRYSTALS-Kyber ML-KEM Protection</p>
+                            </div>
+                            <span id="sim-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">SAFE</span>
+                        </div>
+                        <div class="relative h-64 bg-black/50 rounded-xl border border-gray-800 p-4 flex flex-col justify-center items-center">
+                            <div class="w-full absolute top-4 px-4 flex justify-between text-xs font-mono text-gray-400">
+                                <span>Progress:</span>
+                                <span id="progress-percent" class="text-cyan-400 font-bold">0%</span>
+                            </div>
+                            <div class="w-full absolute top-9 px-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div id="sim-progress-bar" class="h-full bg-cyan-400 w-0 transition-all"></div>
+                            </div>
+                            <div id="sim-visual-content" class="text-center space-y-2 mt-4">
+                                <i class="fa-solid fa-shield-virus text-5xl text-emerald-400"></i>
+                                <p class="text-sm font-mono text-gray-300">Lattice Vector Space Intractable</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECH ADS -->
+        <section id="ads" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="text-center space-y-3">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Commercial Solutions</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Tech Ads &amp; Commercial Services</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card rounded-2xl p-6 border border-cyan-500/30 flex flex-col justify-between space-y-4">
+                        <span class="px-2 py-1 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300 w-fit">SPONSORED</span>
+                        <h3 class="text-xl font-bold text-white">KyberGuard Enterprise VPN</h3>
+                        <p class="text-xs text-gray-400">Quantum-resistant tunnel protocol with hybrid ML-KEM keys.</p>
+                        <button onclick="triggerAdAlert('KyberGuard')" class="w-full py-2.5 rounded-lg bg-cyan-400 text-obsidian font-bold text-xs uppercase">Request Demo</button>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 border border-purple-500/30 flex flex-col justify-between space-y-4">
+                        <span class="px-2 py-1 rounded text-[10px] font-mono bg-purple-500/20 text-purple-300 w-fit">TOOLKIT</span>
+                        <h3 class="text-xl font-bold text-white">NIST PQC Migration Engine</h3>
+                        <p class="text-xs text-gray-400">Automated scanning suite for legacy RSA/ECC vulnerabilities.</p>
+                        <button onclick="triggerAdAlert('Migration Toolkit')" class="w-full py-2.5 rounded-lg bg-purple-600 text-white font-bold text-xs uppercase">Download SDK</button>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 border border-emerald-500/30 flex flex-col justify-between space-y-4">
+                        <span class="px-2 py-1 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 w-fit">CLOUD HSM</span>
+                        <h3 class="text-xl font-bold text-white">Q-Shield Cloud HSM</h3>
+                        <p class="text-xs text-gray-400">Hardware Security Modules for post-quantum key storage.</p>
+                        <button onclick="triggerAdAlert('Q-Shield')" class="w-full py-2.5 rounded-lg bg-emerald-400 text-obsidian font-bold text-xs uppercase">Explore Specs</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRIVIA -->
+        <section id="trivia" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900 bg-obsidian/40">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="text-center space-y-3">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// High Impact Metrics</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Fun Facts &amp; Tech Trivia</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="text-3xl font-extrabold text-cyan-400 font-mono">300 Trillion</div>
+                        <p class="text-xs text-gray-300">Years for a classical supercomputer to factor RSA-2048 vs hours with a quantum computer.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="text-3xl font-extrabold text-purple-400 font-mono">2^100 States</div>
+                        <p class="text-xs text-gray-300">Simultaneous states represented by just 100 physical qubits in superposition.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="text-3xl font-extrabold text-emerald-400 font-mono">-273.15 °C</div>
+                        <p class="text-xs text-gray-300">Operating temperature of dilution refrigerators housing quantum chips.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="text-3xl font-extrabold text-cyan-300 font-mono">500 Dim</div>
+                        <p class="text-xs text-gray-300">Vector grid dimensions used in lattice-based PQC algorithms.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PODCAST WITH SPANISH REFLECTION NOTES -->
+        <section id="podcast" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900">
+            <div class="max-w-5xl mx-auto space-y-10">
+                <div class="text-center space-y-3">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Project Podcast - Behind The Scenes</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Team 10 Reflection &amp; Development Podcast</h2>
+                </div>
+
+                <!-- Nota obligatoria en Español exigida por el profesor -->
+                <div class="glass-card p-6 rounded-xl border-l-4 border-cyan-400 bg-cyan-950/20 text-xs text-gray-300 space-y-2">
+                    <div class="font-bold text-cyan-400 uppercase font-mono">Nota en Español (Cumplimiento de Pautas del Proyecto)</div>
+                    <p class="leading-relaxed">
+                        En este espacio multimedia, el equipo <strong>TEAM SHADOWS OF LUMIERE</strong> expone en <strong>español</strong> todo el proceso de investigación documental, la traducción e interpretación de los conceptos al inglés técnico, la selección de la paleta de colores obsidian/cyberpunk, la estructuración responsive con HTML/Tailwind CSS y la integración de las secciones requeridas para la asignatura de Inglés Técnico.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl border border-cyan-500/30 space-y-6">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-obsidian text-3xl flex-shrink-0">
+                            <i class="fa-solid fa-podcast"></i>
+                        </div>
+                        <div>
+                            <span class="px-2.5 py-1 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300">EPISODE 01 • BEHIND THE SCENES</span>
+                            <h3 class="text-xl font-bold text-white mt-1">Proceso de Diseño, Maquetación y Desarrollo</h3>
+                            <p class="text-xs text-gray-400 mt-1">Team Shadows of Lumiere • 3er Semestre de Informática</p>
+                        </div>
+                    </div>
+                    <audio class="w-full" controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </section>
+
+        <!-- REFERENCES -->
+        <section id="references" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-900 bg-obsidian/40">
+            <div class="max-w-5xl mx-auto space-y-10">
+                <div class="text-center space-y-3">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest">// Academic Sources</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">References &amp; Bibliography</h2>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl space-y-4">
+                    <ul class="space-y-4 text-xs font-mono text-gray-300">
+                        <li class="p-4 rounded-xl bg-black/40 border border-gray-800">
+                            <span class="text-cyan-400 font-bold mr-2">[1]</span> NIST. (2024). <span class="italic text-white">FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard</span>.
+                        </li>
+                        <li class="p-4 rounded-xl bg-black/40 border border-gray-800">
+                            <span class="text-purple-400 font-bold mr-2">[2]</span> Shor, P. W. (1994). <span class="italic text-white">Algorithms for quantum computation: discrete logarithms and factoring</span>. IEEE Proceedings.
+                        </li>
+                        <li class="p-4 rounded-xl bg-black/40 border border-gray-800">
+                            <span class="text-emerald-400 font-bold mr-2">[3]</span> Regev, O. (2009). <span class="italic text-white">On lattices, learning with errors, and cryptography</span>. Journal of the ACM.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-gray-900 bg-obsidian py-8 px-4 text-center text-xs text-gray-500 font-mono">
+        TEAM SHADOWS OF LUMIERE • Inglés Técnico • 2026
+    </footer>
+
+    <!-- MODAL -->
+    <div id="content-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card max-w-2xl w-full p-8 rounded-2xl border border-cyan-500/40 relative space-y-4">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div id="modal-badge" class="px-2.5 py-1 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300 w-fit">DOSSIER</div>
+            <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
+            <div id="modal-body" class="text-sm text-gray-300 space-y-3 leading-relaxed"></div>
+        </div>
+    </div>
+
+    <script>
+        // Background canvas particles
+        const canvas = document.getElementById('quantum-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = '#00f3ff'; ctx.globalAlpha = 0.3;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        for (let i = 0; i < 35; i++) particles.push(new Particle());
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Simulator Logic
+        function runSimulation() {
+            const algo = document.getElementById('sim-algorithm').value;
+            const logBox = document.getElementById('sim-log');
+            const progressBar = document.getElementById('sim-progress-bar');
+            const progressPercent = document.getElementById('progress-percent');
+            const statusTitle = document.getElementById('sim-status-title');
+            const statusBadge = document.getElementById('sim-badge');
+            const visualContent = document.getElementById('sim-visual-content');
+
+            progressBar.style.width = '0%'; progressPercent.innerText = '0%';
+            logBox.innerHTML = `<p class="text-cyan-400">[Init] Running quantum circuit...</p>`;
+
+            let prog = 0;
+            const interval = setInterval(() => {
+                prog += 25;
+                progressBar.style.width = `${prog}%`;
+                progressPercent.innerText = `${prog}%`;
+                if (prog >= 100) {
+                    clearInterval(interval);
+                    if (algo === 'rsa') {
+                        statusTitle.innerText = "VULNERABILITY DETECTED";
+                        statusBadge.className = "px-3 py-1 rounded-full text-xs font-mono font-bold bg-red-500/20 text-red-400 border border-red-500/40";
+                        statusBadge.innerText = "KEY BROKEN";
+                        visualContent.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-5xl text-red-500"></i><p class="text-sm font-mono text-red-300">RSA Factorized via Shor's Algorithm</p>`;
+                    } else {
+                        statusTitle.innerText = "POST-QUANTUM RESILIENT";
+                        statusBadge.className = "px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+                        statusBadge.innerText = "SECURE";
+                        visualContent.innerHTML = `<i class="fa-solid fa-shield-virus text-5xl text-emerald-400"></i><p class="text-sm font-mono text-emerald-300">Lattice Vector Space Intractable</p>`;
+                    }
+                }
+            }, 250);
+        }
+
+        // Modals
+        function openArticleModal(id) {
+            const modal = document.getElementById('content-modal');
+            document.getElementById('modal-title').innerText = id === 1 ? "The Fall of RSA" : "Lattice Mathematics";
+            document.getElementById('modal-body').innerHTML = `<p>Detailed technical essay content translated to English for Team 10 analysis regarding post-quantum security architecture.</p>`;
+            modal.classList.remove('hidden');
+        }
+        function openNewsModal(id) {
+            const modal = document.getElementById('content-modal');
+            document.getElementById('modal-title').innerText = "Industry Report News Update";
+            document.getElementById('modal-body').innerHTML = `<p>Verified NIST and industry updates concerning global PQC integration protocols and hardware scaling milestones.</p>`;
+            modal.classList.remove('hidden');
+        }
+        function closeModal() { document.getElementById('content-modal').classList.add('hidden'); }
+        function triggerAdAlert(name) { alert(`Commercial Inquiry: ${name} prototype selected.`); }
+    </script>
+</body>
+</html>
